@@ -10,6 +10,7 @@ import java.util.function.Function;
 public class CsvStorageImpl implements CsvStorage {
 
     private Map<String, String> props = new HashMap<>();
+    private static String IGNORE_DELIMITER_BETWEEN_QUOTES = "%s(?=(?:[^%s]*%s[^%s]*%s)*[^%s]*$)";
 
     public CsvStorageImpl() {
         props.put("encoding", "UTF-8");
@@ -55,7 +56,7 @@ public class CsvStorageImpl implements CsvStorage {
         String delimiter = props.get("valuesDelimiter");
         String quoteCharacter = props.get("quoteCharacter");
         String encoding = props.get("encoding");
-        String regex = String.format("%s(?=(?:[^%s]*%s[^%s]*%s)*[^%s]*$)",
+        String regex = String.format(IGNORE_DELIMITER_BETWEEN_QUOTES,
                 delimiter, quoteCharacter, quoteCharacter, quoteCharacter, quoteCharacter, quoteCharacter);
 
         try (InputStreamReader reader = new InputStreamReader(source, encoding);
